@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ## Inherit vendor proprietary files
-$(call inherit-product, vendor/samsung/cooper/vendor_blobs.mk)
+$(call inherit-product, device/samsung/cooper/vendor_blobs.mk)
 
 include device/samsung/cooper/device.mk
 
