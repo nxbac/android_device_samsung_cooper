@@ -1,6 +1,6 @@
-diff -rupN original_av/camera/CameraParameters.cpp hq_av/camera/CameraParameters.cpp
---- original_av/camera/CameraParameters.cpp	2012-12-09 22:09:23.905373230 +0100
-+++ hq_av/camera/CameraParameters.cpp	2012-12-09 22:14:38.045362295 +0100
+diff -rupN b/camera/CameraParameters.cpp a/camera/CameraParameters.cpp
+--- b/camera/CameraParameters.cpp	2012-12-09 22:09:23.905373230 +0100
++++ a/camera/CameraParameters.cpp	2012-12-09 22:14:38.045362295 +0100
 @@ -49,7 +49,7 @@ const char CameraParameters::CAPTURE_MOD
  const char CameraParameters::CAPTURE_MODE_CONTI_BURST[] = "contiburst";
  const char CameraParameters::CAPTURE_MODE_HDR[] = "hdr";
@@ -296,9 +296,9 @@ diff -rupN original_av/camera/CameraParameters.cpp hq_av/camera/CameraParameters
  
  }; // namespace android
 +
-diff -rupN original_av/.git/config hq_av/.git/config
---- original_av/.git/config	2012-12-09 22:09:23.869373231 +0100
-+++ hq_av/.git/config	2012-12-09 22:14:38.017362296 +0100
+diff -rupN b/.git/config a/.git/config
+--- b/.git/config	2012-12-09 22:09:23.869373231 +0100
++++ a/.git/config	2012-12-09 22:14:38.017362296 +0100
 @@ -5,7 +5,7 @@
  	logallrefupdates = true
  [remote "origin"]
@@ -308,41 +308,41 @@ diff -rupN original_av/.git/config hq_av/.git/config
  [branch "jellybean"]
  	remote = origin
  	merge = refs/heads/jellybean
-Los archivos binarios original_av/.git/index y hq_av/.git/index son distintos
-diff -rupN original_av/.git/logs/HEAD hq_av/.git/logs/HEAD
---- original_av/.git/logs/HEAD	2012-12-09 22:09:23.865373231 +0100
-+++ hq_av/.git/logs/HEAD	2012-12-09 22:14:38.017362296 +0100
+Los archivos binarios b/.git/index y a/.git/index son distintos
+diff -rupN b/.git/logs/HEAD a/.git/logs/HEAD
+--- b/.git/logs/HEAD	2012-12-09 22:09:23.865373231 +0100
++++ a/.git/logs/HEAD	2012-12-09 22:14:38.017362296 +0100
 @@ -1 +1 @@
 -0000000000000000000000000000000000000000 5439bd526752131fc3cc6e5aaa6cf86cedb997be bieltv3 <bieltv.3@gmail.com> 1355087363 +0100	clone: from git://github.com/CyanogenMod/android_frameworks_av.git
 +0000000000000000000000000000000000000000 c7521ca80395778f94776fd116263dd29ea121c6 bieltv3 <bieltv.3@gmail.com> 1355087678 +0100	clone: from git://github.com/Jellaxy/android_frameworks_av.git
-diff -rupN original_av/.git/logs/refs/heads/jellybean hq_av/.git/logs/refs/heads/jellybean
---- original_av/.git/logs/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
-+++ hq_av/.git/logs/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
+diff -rupN b/.git/logs/refs/heads/jellybean a/.git/logs/refs/heads/jellybean
+--- b/.git/logs/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
++++ a/.git/logs/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
 @@ -1 +1 @@
 -0000000000000000000000000000000000000000 5439bd526752131fc3cc6e5aaa6cf86cedb997be bieltv3 <bieltv.3@gmail.com> 1355087363 +0100	clone: from git://github.com/CyanogenMod/android_frameworks_av.git
 +0000000000000000000000000000000000000000 c7521ca80395778f94776fd116263dd29ea121c6 bieltv3 <bieltv.3@gmail.com> 1355087678 +0100	clone: from git://github.com/Jellaxy/android_frameworks_av.git
-Los archivos binarios original_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx y hq_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx son distintos
-Los archivos binarios original_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack y hq_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack son distintos
-Los archivos binarios original_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx y hq_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx son distintos
-Los archivos binarios original_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack y hq_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack son distintos
-diff -rupN original_av/.git/packed-refs hq_av/.git/packed-refs
---- original_av/.git/packed-refs	2012-12-09 22:09:23.817373233 +0100
-+++ hq_av/.git/packed-refs	2012-12-09 22:14:37.969362299 +0100
+Los archivos binarios b/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx y a/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx son distintos
+Los archivos binarios b/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack y a/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack son distintos
+Los archivos binarios b/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx y a/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx son distintos
+Los archivos binarios b/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack y a/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack son distintos
+diff -rupN b/.git/packed-refs a/.git/packed-refs
+--- b/.git/packed-refs	2012-12-09 22:09:23.817373233 +0100
++++ a/.git/packed-refs	2012-12-09 22:14:37.969362299 +0100
 @@ -1,4 +1,2 @@
  # pack-refs with: peeled 
 -5439bd526752131fc3cc6e5aaa6cf86cedb997be refs/remotes/origin/jellybean
 -e3b7ab2ee474440e2651035ffd015f55626ce286 refs/remotes/origin/jellybean-stable
 -33ce459110ec8af960d81bce65e1fb38fb750fe8 refs/remotes/origin/mr1-staging
 +c7521ca80395778f94776fd116263dd29ea121c6 refs/remotes/origin/jellybean
-diff -rupN original_av/.git/refs/heads/jellybean hq_av/.git/refs/heads/jellybean
---- original_av/.git/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
-+++ hq_av/.git/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
+diff -rupN b/.git/refs/heads/jellybean a/.git/refs/heads/jellybean
+--- b/.git/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
++++ a/.git/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
 @@ -1 +1 @@
 -5439bd526752131fc3cc6e5aaa6cf86cedb997be
 +c7521ca80395778f94776fd116263dd29ea121c6
-diff -rupN original_av/include/camera/CameraParameters.h hq_av/include/camera/CameraParameters.h
---- original_av/include/camera/CameraParameters.h	2012-12-09 22:09:23.965373228 +0100
-+++ hq_av/include/camera/CameraParameters.h	2012-12-09 22:14:38.073362294 +0100
+diff -rupN b/include/camera/CameraParameters.h a/include/camera/CameraParameters.h
+--- b/include/camera/CameraParameters.h	2012-12-09 22:09:23.965373228 +0100
++++ a/include/camera/CameraParameters.h	2012-12-09 22:14:38.073362294 +0100
 @@ -158,9 +158,8 @@ public:
      // Example value: "(10500,26623),(15000,26623),(30000,30000)"
      static const char KEY_SUPPORTED_PREVIEW_FPS_RANGE[];
@@ -554,9 +554,9 @@ diff -rupN original_av/include/camera/CameraParameters.h hq_av/include/camera/Ca
  
  #endif
 +
-diff -rupN original_av/include/camera/QCameraParameters.h hq_av/include/camera/QCameraParameters.h
---- original_av/include/camera/QCameraParameters.h	2012-12-09 22:09:23.969373227 +0100
-+++ hq_av/include/camera/QCameraParameters.h	2012-12-09 22:14:38.073362294 +0100
+diff -rupN b/include/camera/QCameraParameters.h a/include/camera/QCameraParameters.h
+--- b/include/camera/QCameraParameters.h	2012-12-09 22:09:23.969373227 +0100
++++ a/include/camera/QCameraParameters.h	2012-12-09 22:14:38.073362294 +0100
 @@ -150,8 +150,6 @@ public:
      static const char ISO_400[];
      static const char ISO_800[];
@@ -566,9 +566,9 @@ diff -rupN original_av/include/camera/QCameraParameters.h hq_av/include/camera/Q
      // Values for Lens Shading
      static const char LENSSHADE_ENABLE[] ;
      static const char LENSSHADE_DISABLE[] ;
-diff -rupN original_av/media/libmedia/AudioSystem.cpp hq_av/media/libmedia/AudioSystem.cpp
---- original_av/media/libmedia/AudioSystem.cpp	2012-12-09 22:09:24.289373216 +0100
-+++ hq_av/media/libmedia/AudioSystem.cpp	2012-12-09 22:14:38.281362287 +0100
+diff -rupN b/media/libmedia/AudioSystem.cpp a/media/libmedia/AudioSystem.cpp
+--- b/media/libmedia/AudioSystem.cpp	2012-12-09 22:09:24.289373216 +0100
++++ a/media/libmedia/AudioSystem.cpp	2012-12-09 22:14:38.281362287 +0100
 @@ -848,6 +848,11 @@ extern "C" bool _ZN7android11AudioSystem
      }
  }
@@ -581,9 +581,9 @@ diff -rupN original_av/media/libmedia/AudioSystem.cpp hq_av/media/libmedia/Audio
  #endif // AUDIO_LEGACY
  
  }; // namespace android
-diff -rupN original_av/media/libmediaplayerservice/StagefrightRecorder.cpp hq_av/media/libmediaplayerservice/StagefrightRecorder.cpp
---- original_av/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:09:24.317373215 +0100
-+++ hq_av/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:14:38.301362286 +0100
+diff -rupN b/media/libmediaplayerservice/StagefrightRecorder.cpp a/media/libmediaplayerservice/StagefrightRecorder.cpp
+--- b/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:09:24.317373215 +0100
++++ a/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:14:38.301362286 +0100
 @@ -1423,6 +1423,9 @@ status_t StagefrightRecorder::setupSurfa
  
  status_t StagefrightRecorder::setupCameraSource(
@@ -614,9 +614,9 @@ diff -rupN original_av/media/libmediaplayerservice/StagefrightRecorder.cpp hq_av
              ALOGW("msm7627 family of chipsets supports, only one buffer at a time");
              encoder_flags |= OMXCodec::kOnlySubmitOneInputBufferAtOneTime;
          }
-diff -rupN original_av/media/libstagefright/ACodec.cpp hq_av/media/libstagefright/ACodec.cpp
---- original_av/media/libstagefright/ACodec.cpp	2012-12-09 22:09:24.329373215 +0100
-+++ hq_av/media/libstagefright/ACodec.cpp	2012-12-09 22:14:38.313362286 +0100
+diff -rupN b/media/libstagefright/ACodec.cpp a/media/libstagefright/ACodec.cpp
+--- b/media/libstagefright/ACodec.cpp	2012-12-09 22:09:24.329373215 +0100
++++ a/media/libstagefright/ACodec.cpp	2012-12-09 22:14:38.313362286 +0100
 @@ -37,6 +37,26 @@
  #include "sec_format.h"
  #endif
@@ -683,9 +683,9 @@ diff -rupN original_av/media/libstagefright/ACodec.cpp hq_av/media/libstagefrigh
  ////////////////////////////////////////////////////////////////////////////////
  
  struct ACodec::BaseState : public AState {
-diff -rupN original_av/media/libstagefright/Android.mk hq_av/media/libstagefright/Android.mk
---- original_av/media/libstagefright/Android.mk	2012-12-09 22:09:24.337373215 +0100
-+++ hq_av/media/libstagefright/Android.mk	2012-12-09 22:14:38.313362286 +0100
+diff -rupN b/media/libstagefright/Android.mk a/media/libstagefright/Android.mk
+--- b/media/libstagefright/Android.mk	2012-12-09 22:09:24.337373215 +0100
++++ a/media/libstagefright/Android.mk	2012-12-09 22:14:38.313362286 +0100
 @@ -7,6 +7,34 @@ ifeq ($(BOARD_USES_ALSA_AUDIO),true)
      endif
  endif
@@ -739,9 +739,9 @@ diff -rupN original_av/media/libstagefright/Android.mk hq_av/media/libstagefrigh
          libsonivox \
          libssl \
          libstagefright_omx \
-diff -rupN original_av/media/libstagefright/AwesomePlayer.cpp hq_av/media/libstagefright/AwesomePlayer.cpp
---- original_av/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:09:24.337373215 +0100
-+++ hq_av/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:14:38.317362285 +0100
+diff -rupN b/media/libstagefright/AwesomePlayer.cpp a/media/libstagefright/AwesomePlayer.cpp
+--- b/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:09:24.337373215 +0100
++++ a/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:14:38.317362285 +0100
 @@ -64,7 +64,12 @@ Copyright (c) 2012, Code Aurora Forum. A
  
  #include <cutils/properties.h>
@@ -755,9 +755,9 @@ diff -rupN original_av/media/libstagefright/AwesomePlayer.cpp hq_av/media/libsta
  #define FRAME_DROP_FREQ 0
  
  namespace android {
-diff -rupN original_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp hq_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp
---- original_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:09:25.093373188 +0100
-+++ hq_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:14:38.785362269 +0100
+diff -rupN b/media/libstagefright/colorconversion/SoftwareRenderer.cpp a/media/libstagefright/colorconversion/SoftwareRenderer.cpp
+--- b/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:09:25.093373188 +0100
++++ a/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:14:38.785362269 +0100
 @@ -28,6 +28,11 @@
  
  namespace android {
@@ -841,9 +841,9 @@ diff -rupN original_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp
      } else {
          CHECK_EQ(mColorFormat, OMX_TI_COLOR_FormatYUV420PackedSemiPlanar);
  
-diff -rupN original_av/media/libstagefright/include/SoftwareRenderer.h hq_av/media/libstagefright/include/SoftwareRenderer.h
---- original_av/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:09:25.113373188 +0100
-+++ hq_av/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:14:38.797362269 +0100
+diff -rupN b/media/libstagefright/include/SoftwareRenderer.h a/media/libstagefright/include/SoftwareRenderer.h
+--- b/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:09:25.113373188 +0100
++++ a/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:14:38.797362269 +0100
 @@ -48,6 +48,9 @@ private:
      int32_t mWidth, mHeight;
      int32_t mCropLeft, mCropTop, mCropRight, mCropBottom;
@@ -854,9 +854,9 @@ diff -rupN original_av/media/libstagefright/include/SoftwareRenderer.h hq_av/med
  
      SoftwareRenderer(const SoftwareRenderer &);
      SoftwareRenderer &operator=(const SoftwareRenderer &);
-diff -rupN original_av/media/libstagefright/MPEG4Writer.cpp hq_av/media/libstagefright/MPEG4Writer.cpp
---- original_av/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:09:24.353373214 +0100
-+++ hq_av/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:14:38.325362285 +0100
+diff -rupN b/media/libstagefright/MPEG4Writer.cpp a/media/libstagefright/MPEG4Writer.cpp
+--- b/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:09:24.353373214 +0100
++++ a/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:14:38.325362285 +0100
 @@ -1917,7 +1917,7 @@ status_t MPEG4Writer::Track::threadEntry
              mGotAllCodecSpecificData = true;
              continue;
@@ -866,9 +866,9 @@ diff -rupN original_av/media/libstagefright/MPEG4Writer.cpp hq_av/media/libstage
          else if (mIsAvc && count < 3) {
              size_t size = buffer->range_length();
  
-diff -rupN original_av/media/libstagefright/OMXCodec.cpp hq_av/media/libstagefright/OMXCodec.cpp
---- original_av/media/libstagefright/OMXCodec.cpp	2012-12-09 22:09:24.365373214 +0100
-+++ hq_av/media/libstagefright/OMXCodec.cpp	2012-12-09 22:14:38.333362285 +0100
+diff -rupN b/media/libstagefright/OMXCodec.cpp a/media/libstagefright/OMXCodec.cpp
+--- b/media/libstagefright/OMXCodec.cpp	2012-12-09 22:09:24.365373214 +0100
++++ a/media/libstagefright/OMXCodec.cpp	2012-12-09 22:14:38.333362285 +0100
 @@ -90,11 +90,66 @@ const static int64_t kBufferFilledEventT
  // component in question is buggy or not.
  const static uint32_t kMaxColorFormatSupported = 1000;
@@ -1055,9 +1055,9 @@ diff -rupN original_av/media/libstagefright/OMXCodec.cpp hq_av/media/libstagefri
      CODEC_LOGV("allocating %lu buffers of size %lu on %s port",
              def.nBufferCountActual, def.nBufferSize,
              portIndex == kPortIndexInput ? "input" : "output");
-diff -rupN original_av/media/libstagefright/StagefrightMetadataRetriever.cpp hq_av/media/libstagefright/StagefrightMetadataRetriever.cpp
---- original_av/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:09:24.377373213 +0100
-+++ hq_av/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:14:38.333362285 +0100
+diff -rupN b/media/libstagefright/StagefrightMetadataRetriever.cpp a/media/libstagefright/StagefrightMetadataRetriever.cpp
+--- b/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:09:24.377373213 +0100
++++ a/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:14:38.333362285 +0100
 @@ -429,7 +429,7 @@ VideoFrame *StagefrightMetadataRetriever
              && (!strncmp(value, "msm8660", sizeof("msm8660") - 1) ||
                  !strncmp(value, "msm8960", sizeof("msm8960") - 1) ||
@@ -1076,9 +1076,9 @@ diff -rupN original_av/media/libstagefright/StagefrightMetadataRetriever.cpp hq_
  }
  
  void StagefrightMetadataRetriever::parseMetaData() {
-diff -rupN original_av/services/camera/libcameraservice/CameraService.cpp hq_av/services/camera/libcameraservice/CameraService.cpp
---- original_av/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:09:25.193373185 +0100
-+++ hq_av/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:14:38.853362267 +0100
+diff -rupN b/services/camera/libcameraservice/CameraService.cpp a/services/camera/libcameraservice/CameraService.cpp
+--- b/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:09:25.193373185 +0100
++++ a/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:14:38.853362267 +0100
 @@ -328,14 +328,13 @@ void CameraService::loadSound() {
      if (mSoundRef++) return;
  
