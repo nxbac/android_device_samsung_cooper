@@ -1,0 +1,1117 @@
+diff -rupN original_av/camera/CameraParameters.cpp hq_av/camera/CameraParameters.cpp
+--- original_av/camera/CameraParameters.cpp	2012-12-09 22:09:23.905373230 +0100
++++ hq_av/camera/CameraParameters.cpp	2012-12-09 22:14:38.045362295 +0100
+@@ -49,7 +49,7 @@ const char CameraParameters::CAPTURE_MOD
+ const char CameraParameters::CAPTURE_MODE_CONTI_BURST[] = "contiburst";
+ const char CameraParameters::CAPTURE_MODE_HDR[] = "hdr";
+ const char CameraParameters::CAPTURE_MODE_HJR[] = "hjr";
+-const char CameraParameters::CAPTURE_MODE_PANORAMA[] = "panorama";
++const char CameraParameters::CAPTURE_MODE_PANORAMA[] = "panorama";    
+ const char CameraParameters::CONTINUOUS_AF_OFF[] = "caf-off";
+ const char CameraParameters::CONTINUOUS_AF_ON[] = "caf-on";
+ const char CameraParameters::KEY_CONTINUOUS_AF[] = "continuous-af";
+@@ -100,9 +100,6 @@ const char CameraParameters::KEY_FOCUS_M
+ const char CameraParameters::KEY_SUPPORTED_FOCUS_MODES[] = "focus-mode-values";
+ const char CameraParameters::KEY_MAX_NUM_FOCUS_AREAS[] = "max-num-focus-areas";
+ const char CameraParameters::KEY_FOCUS_AREAS[] = "focus-areas";
+-#ifdef SONY_CAMERA
+-const char CameraParameters::KEY_FOCUS_AREA_CENTER[] = "focus-area-center";
+-#endif
+ const char CameraParameters::KEY_FOCAL_LENGTH[] = "focal-length";
+ const char CameraParameters::KEY_HORIZONTAL_VIEW_ANGLE[] = "horizontal-view-angle";
+ const char CameraParameters::KEY_VERTICAL_VIEW_ANGLE[] = "vertical-view-angle";
+@@ -123,14 +120,14 @@ const char CameraParameters::KEY_ZOOM_SU
+ const char CameraParameters::KEY_SMOOTH_ZOOM_SUPPORTED[] = "smooth-zoom-supported";
+ const char CameraParameters::KEY_FOCUS_DISTANCES[] = "focus-distances";
+ const char CameraParameters::KEY_VIDEO_FRAME_FORMAT[] = "video-frame-format";
+-#if defined(QCOM_HARDWARE) || defined(EXYNOS4X12_ENHANCEMENTS) || defined(HAVE_ISO)
+-const char CameraParameters::KEY_SUPPORTED_ISO_MODES[] = "iso-values";
+-const char CameraParameters::KEY_ISO_MODE[] = "iso";
+-#endif
+ #ifdef QCOM_HARDWARE
+ const char CameraParameters::KEY_LENSSHADE[] = "lensshade";
+ const char CameraParameters::KEY_SUPPORTED_LENSSHADE_MODES[] = "lensshade-values";
++#ifdef SAMSUNG_CAMERA_QCOM
++const char CameraParameters::KEY_AUTO_EXPOSURE[] = "metering";
++#else
+ const char CameraParameters::KEY_AUTO_EXPOSURE[] = "auto-exposure";
++#endif
+ const char CameraParameters::KEY_SUPPORTED_AUTO_EXPOSURE[] = "auto-exposure-values";
+ const char CameraParameters::KEY_DENOISE[] = "denoise";
+ const char CameraParameters::KEY_SUPPORTED_DENOISE[] = "denoise-values";
+@@ -146,12 +143,17 @@ const char CameraParameters::KEY_REDEYE_
+ const char CameraParameters::KEY_SUPPORTED_REDEYE_REDUCTION[] = "redeye-reduction-values";
+ const char CameraParameters::KEY_HIGH_DYNAMIC_RANGE_IMAGING[] = "hdr";
+ const char CameraParameters::KEY_SUPPORTED_HDR_IMAGING_MODES[] = "hdr-values";
++#ifndef SAMSUNG_CAMERA_HARDWARE
++const char CameraParameters::KEY_ISO_MODE[] = "iso";
++const char CameraParameters::KEY_SUPPORTED_ISO_MODES[] = "iso-values";
++#endif
+ #endif
+ #ifdef SAMSUNG_CAMERA_HARDWARE
+-const char CameraParameters::KEY_ANTI_SHAKE_MODE[] = "anti-shake";
+ const char CameraParameters::KEY_METERING[] = "metering";
+ const char CameraParameters::KEY_WDR[] = "wdr";
+-const char CameraParameters::KEY_WEATHER[] = "weather";
++const char CameraParameters::KEY_ANTI_SHAKE_MODE[] = "anti-shake";
++const char CameraParameters::KEY_ISO_MODE[] = "iso";
++const char CameraParameters::KEY_SUPPORTED_ISO_MODES[] = "iso-values";
+ #endif
+ const char CameraParameters::KEY_VIDEO_SIZE[] = "video-size";
+ const char CameraParameters::KEY_SUPPORTED_VIDEO_SIZES[] = "video-size-values";
+@@ -167,15 +169,8 @@ const char CameraParameters::KEY_VIDEO_S
+ const char CameraParameters::KEY_ZSL[] = "zsl";
+ const char CameraParameters::KEY_SUPPORTED_ZSL_MODES[] = "zsl-values";
+ const char CameraParameters::KEY_CAMERA_MODE[] = "camera-mode";
+-#ifdef QCOM_SONY_HARDWARE
+-const char CameraParameters::KEY_EX_SUPPORTED_METERING_MODES[] = "semc-metering-mode-values";
+-#endif
+ #endif
+ const char CameraParameters::KEY_AE_BRACKET_HDR[] = "ae-bracket-hdr";
+-#if defined(CAMERA_POWERMODE) || defined(QCOM_SONY_HARDWARE)
+-const char CameraParameters::KEY_POWER_MODE[] = "power-mode";
+-const char CameraParameters::KEY_POWER_MODE_SUPPORTED[] = "power-mode-supported";
+-#endif
+ /*only effective when KEY_AE_BRACKET_HDR set to ae_bracketing*/
+ //const char CameraParameters::KEY_AE_BRACKET_SETTING_KEY[] = "ae-bracket-setting";
+ 
+@@ -243,16 +238,13 @@ const char CameraParameters::SCENE_MODE_
+ const char CameraParameters::SCENE_MODE_SPORTS[] = "sports";
+ const char CameraParameters::SCENE_MODE_PARTY[] = "party";
+ const char CameraParameters::SCENE_MODE_CANDLELIGHT[] = "candlelight";
+-#ifdef QCOM_HARDWARE
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+ const char CameraParameters::SCENE_MODE_BACKLIGHT[] = "backlight";
+ const char CameraParameters::SCENE_MODE_FLOWERS[] = "flowers";
+ #endif
+ const char CameraParameters::SCENE_MODE_BARCODE[] = "barcode";
+ #ifdef QCOM_HARDWARE
+ const char CameraParameters::SCENE_MODE_AR[] = "AR";
+-#ifdef QCOM_SONY_HARDWARE
+-const char CameraParameters::EX_SCENE_MODE_DOCUMENT[] = "document";
+-#endif
+ const char CameraParameters::SCENE_MODE_OFF[] = "off";
+ 
+ // Values for auto scene detection settings.
+@@ -286,7 +278,7 @@ const char CameraParameters::FOCUS_MODE_
+ const char CameraParameters::FOCUS_MODE_EDOF[] = "edof";
+ const char CameraParameters::FOCUS_MODE_CONTINUOUS_VIDEO[] = "continuous-video";
+ const char CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE[] = "continuous-picture";
+-#if defined(QCOM_HARDWARE)
++#ifdef QCOM_HARDWARE
+ const char CameraParameters::FOCUS_MODE_CONTINUOUS_CAMERA[] = "continuous-camera";
+ const char CameraParameters::FOCUS_MODE_NORMAL[] = "normal";
+ 
+@@ -302,24 +294,22 @@ const char CameraParameters::ISO_200[] =
+ const char CameraParameters::ISO_400[] = "ISO400";
+ const char CameraParameters::ISO_800[] = "ISO800";
+ const char CameraParameters::ISO_1600[] = "ISO1600";
+-const char CameraParameters::ISO_3200[] = "ISO3200";
+-const char CameraParameters::ISO_6400[] = "ISO6400";
+ 
+  //Values for Lens Shading
+ const char CameraParameters::LENSSHADE_ENABLE[] = "enable";
+ const char CameraParameters::LENSSHADE_DISABLE[] = "disable";
+ 
+ // Values for auto exposure settings.
++#ifdef SAMSUNG_CAMERA_QCOM
++const char CameraParameters::AUTO_EXPOSURE_FRAME_AVG[] = "matrix";
++const char CameraParameters::AUTO_EXPOSURE_CENTER_WEIGHTED[] = "center";
++const char CameraParameters::AUTO_EXPOSURE_SPOT_METERING[] = "spot";
++#else
+ const char CameraParameters::AUTO_EXPOSURE_FRAME_AVG[] = "frame-average";
+ const char CameraParameters::AUTO_EXPOSURE_CENTER_WEIGHTED[] = "center-weighted";
+ const char CameraParameters::AUTO_EXPOSURE_SPOT_METERING[] = "spot-metering";
+-
+-#ifdef QCOM_SONY_HARDWARE
+-const char CameraParameters::KEY_SEMC_METRY_MODE[] = "semc-metering-mode";
+-const char CameraParameters::SEMC_METRY_CENTER[] = "center-weighted";
+-const char CameraParameters::SEMC_METRY_FRAME[] = "frame-adverage";
+-const char CameraParameters::SEMC_METRY_SPOT[] = "spot";
+ #endif
++
+ const char CameraParameters::KEY_GPS_LATITUDE_REF[] = "gps-latitude-ref";
+ const char CameraParameters::KEY_GPS_LONGITUDE_REF[] = "gps-longitude-ref";
+ const char CameraParameters::KEY_GPS_ALTITUDE_REF[] = "gps-altitude-ref";
+@@ -337,26 +327,27 @@ const char CameraParameters::SKIN_TONE_E
+ const char CameraParameters::SKIN_TONE_ENHANCEMENT_DISABLE[] = "disable";
+ 
+ const char CameraParameters::KEY_SHARPNESS[] = "sharpness";
+-#ifdef QCOM_HARDWARE
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+ const char CameraParameters::KEY_MAX_SHARPNESS[] = "sharpness-max";
+ const char CameraParameters::KEY_MIN_SHARPNESS[] = "sharpness-min";
+ #else
+ const char CameraParameters::KEY_MAX_SHARPNESS[] = "max-sharpness";
+ #endif
+ const char CameraParameters::KEY_CONTRAST[] = "contrast";
+-#ifdef QCOM_HARDWARE
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+ const char CameraParameters::KEY_MAX_CONTRAST[] = "contrast-max";
+ const char CameraParameters::KEY_MIN_CONTRAST[] = "contrast-min";
+ #else
+ const char CameraParameters::KEY_MAX_CONTRAST[] = "max-contrast";
+ #endif
+ const char CameraParameters::KEY_SATURATION[] = "saturation";
+-#ifdef QCOM_HARDWARE
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+ const char CameraParameters::KEY_MAX_SATURATION[] = "saturation-max";
+ const char CameraParameters::KEY_MIN_SATURATION[] = "saturation-min";
+ #else
+ const char CameraParameters::KEY_MAX_SATURATION[] = "max-saturation";
+ #endif
++
+ //Values for DENOISE
+ const char CameraParameters::DENOISE_OFF[] = "denoise-off";
+ const char CameraParameters::DENOISE_ON[] = "denoise-on";
+@@ -396,9 +387,28 @@ const char CameraParameters::AE_BRACKET_
+ const char CameraParameters::AE_BRACKET_HDR[] = "HDR";
+ const char CameraParameters::AE_BRACKET[] = "AE-Bracket";
+ 
+-#if defined(CAMERA_POWERMODE) || defined(QCOM_SONY_HARDWARE)
+-const char CameraParameters::LOW_POWER[] = "Low_Power";
+-const char CameraParameters::NORMAL_POWER[] = "Normal_Power";
++#ifdef SAMSUNG_CAMERA_QCOM
++const char CameraParameters::FOCUS_MODE_FACEDETECT[] = "facedetect";
++const char CameraParameters::FOCUS_MODE_TOUCHAF[] = "touchaf";
++const char CameraParameters::ISO_50[] = "ISO50";
++// const char CameraParameters::KEY_ANTI_SHAKE_MODE[] = "antishake";
++const char CameraParameters::KEY_AUTO_CONTRAST[] = "auto-contrast";
++const char CameraParameters::KEY_BEAUTY_MODE[] = "beauty";
++const char CameraParameters::KEY_BLUR_MODE[] = "blur";
++const char CameraParameters::KEY_VINTAGE_MODE[] = "vintagemode";
++const char CameraParameters::KEY_WDR_MODE[] = "wdr";
++const char CameraParameters::VINTAGE_MODE_BNW[] = "bnw";
++const char CameraParameters::VINTAGE_MODE_COOL[] = "cool";
++const char CameraParameters::VINTAGE_MODE_NORMAL[] = "normal";
++const char CameraParameters::VINTAGE_MODE_OFF[] = "off";
++const char CameraParameters::VINTAGE_MODE_WARM[] = "warm";
++const char CameraParameters::SCENE_MODE_BACKLIGHT[] = "back-light";
++const char CameraParameters::SCENE_MODE_DAWN[] = "dusk-dawn";
++const char CameraParameters::SCENE_MODE_DUSKDAWN[] = "dusk-dawn";
++const char CameraParameters::SCENE_MODE_FALL[] = "fall-color";
++const char CameraParameters::SCENE_MODE_FALL_COLOR[] = "fall-color";
++const char CameraParameters::SCENE_MODE_FLOWERS[] = "flowers";
++const char CameraParameters::SCENE_MODE_TEXT[] = "text";
+ #endif
+ 
+ static const char* portrait = "portrait";
+@@ -488,12 +498,12 @@ void CameraParameters::set(const char *k
+ {
+     // XXX i think i can do this with strspn()
+     if (strchr(key, '=') || strchr(key, ';')) {
+-        //XXX ALOGE("Key \"%s\"contains invalid character (= or ;)", key);
++        //XXX ALOGD("Key \"%s\"contains invalid character (= or ;)", key);
+         return;
+     }
+ 
+     if (strchr(value, '=') || strchr(key, ';')) {
+-        //XXX ALOGE("Value \"%s\"contains invalid character (= or ;)", value);
++        //XXX ALOGD("Value \"%s\"contains invalid character (= or ;)", value);
+         return;
+     }
+ 
+@@ -551,7 +561,7 @@ static int parse_pair(const char *str, i
+     int w = (int)strtol(str, &end, 10);
+     // If a delimeter does not immediately follow, give up.
+     if (*end != delim) {
+-        ALOGE("Cannot find delimeter (%c) in str=%s", delim, str);
++        ALOGD("Cannot find delimeter (%c) in str=%s", delim, str);
+         return -1;
+     }
+ 
+@@ -574,12 +584,12 @@ static int parseNDimVector(const char *s
+ {
+     char *start, *end;
+     if(num == NULL) {
+-        ALOGE("Invalid output array (num == NULL)");
++        ALOGD("Invalid output array (num == NULL)");
+         return -1;
+     }
+     //check if string starts and ends with parantheses
+     if(str[0] != '(' || str[strlen(str)-1] != ')') {
+-        ALOGE("Invalid format of string %s, valid format is (n1, n2, n3, n4 ...)", str);
++        ALOGD("Invalid format of string %s, valid format is (n1, n2, n3, n4 ...)", str);
+         return -1;
+     }
+     start = (char*) str;
+@@ -587,7 +597,7 @@ static int parseNDimVector(const char *s
+     for(int i=0; i<N; i++) {
+         *(num+i) = (int) strtol(start, &end, 10);
+         if(*end != delim && i < N-1) {
+-            ALOGE("Cannot find delimeter '%c' in string \"%s\". end = %c", delim, str, *end);
++            ALOGD("Cannot find delimeter '%c' in string \"%s\". end = %c", delim, str, *end);
+             return -1;
+         }
+         start = end+1;
+@@ -607,7 +617,7 @@ static void parseSizesList(const char *s
+         int success = parse_pair(sizeStartPtr, &width, &height, 'x',
+                                  &sizeStartPtr);
+         if (success == -1 || (*sizeStartPtr != ',' && *sizeStartPtr != '\0')) {
+-            ALOGE("Picture sizes string \"%s\" contains invalid character.", sizesStr);
++            ALOGD("Picture sizes string \"%s\" contains invalid character.", sizesStr);
+             return;
+         }
+         sizes.push(Size(width, height));
+@@ -650,12 +660,6 @@ void CameraParameters::getSupportedPrevi
+ }
+ 
+ #ifdef QCOM_HARDWARE
+-void CameraParameters::setPostviewSize(int width, int height)
+-{
+-    // dummy
+-}
+-
+-
+ void CameraParameters::getSupportedHfrSizes(Vector<Size> &sizes) const
+ {
+     const char *hfrSizesStr = get(KEY_SUPPORTED_HFR_SIZES);
+@@ -668,6 +672,11 @@ void CameraParameters::setPreviewFpsRang
+     snprintf(str, sizeof(str), "%d,%d",minFPS,maxFPS);
+     set(KEY_PREVIEW_FPS_RANGE,str);
+ }
++
++void CameraParameters::setPostviewSize(int width, int height)
++{
++    // dummy
++}
+ #endif
+ 
+ void CameraParameters::setVideoSize(int width, int height)
+@@ -821,12 +830,6 @@ void CameraParameters::getMeteringAreaCe
+     }
+ }
+ 
+-#ifdef QCOM_SONY_HARDWARE
+-void CameraParameters::getFocusAreaCenter(int *x, int *y) const
+-{
+-    // dummy
+-}
+-#endif
+ void CameraParameters::getTouchIndexAf(int *x, int *y) const
+ {
+     *x = -1;
+@@ -864,3 +867,4 @@ status_t CameraParameters::dump(int fd,
+ }
+ 
+ }; // namespace android
++
+diff -rupN original_av/.git/config hq_av/.git/config
+--- original_av/.git/config	2012-12-09 22:09:23.869373231 +0100
++++ hq_av/.git/config	2012-12-09 22:14:38.017362296 +0100
+@@ -5,7 +5,7 @@
+ 	logallrefupdates = true
+ [remote "origin"]
+ 	fetch = +refs/heads/*:refs/remotes/origin/*
+-	url = git://github.com/CyanogenMod/android_frameworks_av.git
++	url = git://github.com/Jellaxy/android_frameworks_av.git
+ [branch "jellybean"]
+ 	remote = origin
+ 	merge = refs/heads/jellybean
+Los archivos binarios original_av/.git/index y hq_av/.git/index son distintos
+diff -rupN original_av/.git/logs/HEAD hq_av/.git/logs/HEAD
+--- original_av/.git/logs/HEAD	2012-12-09 22:09:23.865373231 +0100
++++ hq_av/.git/logs/HEAD	2012-12-09 22:14:38.017362296 +0100
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 5439bd526752131fc3cc6e5aaa6cf86cedb997be bieltv3 <bieltv.3@gmail.com> 1355087363 +0100	clone: from git://github.com/CyanogenMod/android_frameworks_av.git
++0000000000000000000000000000000000000000 c7521ca80395778f94776fd116263dd29ea121c6 bieltv3 <bieltv.3@gmail.com> 1355087678 +0100	clone: from git://github.com/Jellaxy/android_frameworks_av.git
+diff -rupN original_av/.git/logs/refs/heads/jellybean hq_av/.git/logs/refs/heads/jellybean
+--- original_av/.git/logs/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
++++ hq_av/.git/logs/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 5439bd526752131fc3cc6e5aaa6cf86cedb997be bieltv3 <bieltv.3@gmail.com> 1355087363 +0100	clone: from git://github.com/CyanogenMod/android_frameworks_av.git
++0000000000000000000000000000000000000000 c7521ca80395778f94776fd116263dd29ea121c6 bieltv3 <bieltv.3@gmail.com> 1355087678 +0100	clone: from git://github.com/Jellaxy/android_frameworks_av.git
+Los archivos binarios original_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx y hq_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.idx son distintos
+Los archivos binarios original_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack y hq_av/.git/objects/pack/pack-83e09f9f2c1283b21ff7edfd814cbdcd96c1dc8a.pack son distintos
+Los archivos binarios original_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx y hq_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.idx son distintos
+Los archivos binarios original_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack y hq_av/.git/objects/pack/pack-f47720b6567dd8458a73b7459aec1a6e647bb000.pack son distintos
+diff -rupN original_av/.git/packed-refs hq_av/.git/packed-refs
+--- original_av/.git/packed-refs	2012-12-09 22:09:23.817373233 +0100
++++ hq_av/.git/packed-refs	2012-12-09 22:14:37.969362299 +0100
+@@ -1,4 +1,2 @@
+ # pack-refs with: peeled 
+-5439bd526752131fc3cc6e5aaa6cf86cedb997be refs/remotes/origin/jellybean
+-e3b7ab2ee474440e2651035ffd015f55626ce286 refs/remotes/origin/jellybean-stable
+-33ce459110ec8af960d81bce65e1fb38fb750fe8 refs/remotes/origin/mr1-staging
++c7521ca80395778f94776fd116263dd29ea121c6 refs/remotes/origin/jellybean
+diff -rupN original_av/.git/refs/heads/jellybean hq_av/.git/refs/heads/jellybean
+--- original_av/.git/refs/heads/jellybean	2012-12-09 22:09:23.865373231 +0100
++++ hq_av/.git/refs/heads/jellybean	2012-12-09 22:14:38.017362296 +0100
+@@ -1 +1 @@
+-5439bd526752131fc3cc6e5aaa6cf86cedb997be
++c7521ca80395778f94776fd116263dd29ea121c6
+diff -rupN original_av/include/camera/CameraParameters.h hq_av/include/camera/CameraParameters.h
+--- original_av/include/camera/CameraParameters.h	2012-12-09 22:09:23.965373228 +0100
++++ hq_av/include/camera/CameraParameters.h	2012-12-09 22:14:38.073362294 +0100
+@@ -158,9 +158,8 @@ public:
+     // Example value: "(10500,26623),(15000,26623),(30000,30000)"
+     static const char KEY_SUPPORTED_PREVIEW_FPS_RANGE[];
+     // The image format for preview frames. See CAMERA_MSG_PREVIEW_FRAME in
+-    // frameworks/av/include/camera/Camera.h. The default is
+-    // PIXEL_FORMAT_YUV420SP. Example value: "yuv420sp" or PIXEL_FORMAT_XXX
+-    // constants. Read/write.
++    // system/core/include/system/camera.h.
++    // Example value: "yuv420sp" or PIXEL_FORMAT_XXX constants. Read/write.
+     static const char KEY_PREVIEW_FORMAT[];
+     // Supported image formats for preview frames.
+     // Example value: "yuv420sp,yuv422i-yuyv". Read only.
+@@ -199,7 +198,7 @@ public:
+     // Example value: "2048x1536,1024x768". Read only.
+     static const char KEY_SUPPORTED_PICTURE_SIZES[];
+     // The image format for captured pictures. See CAMERA_MSG_COMPRESSED_IMAGE
+-    // in frameworks/base/include/camera/Camera.h.
++    // in system/core/include/system/camera.h.
+     // Example value: "jpeg" or PIXEL_FORMAT_XXX constants. Read/write.
+     static const char KEY_PICTURE_FORMAT[];
+     // Supported image formats for captured pictures.
+@@ -483,7 +482,7 @@ public:
+     // value is "true". It is not supported if the value is not "true" or the
+     // key does not exist.
+     // See CAMERA_CMD_START_SMOOTH_ZOOM, CAMERA_CMD_STOP_SMOOTH_ZOOM, and
+-    // CAMERA_MSG_ZOOM in frameworks/base/include/camera/Camera.h.
++    // CAMERA_MSG_ZOOM in system/core/include/system/camera.h.
+     // Example value: "true". Read only.
+     static const char KEY_SMOOTH_ZOOM_SUPPORTED[];
+ 
+@@ -517,7 +516,7 @@ public:
+     static const char KEY_VIDEO_SIZE[];
+     // A list of the supported dimensions in pixels (width x height)
+     // for video frames. See CAMERA_MSG_VIDEO_FRAME for details in
+-    // frameworks/base/include/camera/Camera.h.
++    // system/core/include/system/camera.h.
+     // Example: "176x144,1280x720". Read only.
+     static const char KEY_SUPPORTED_VIDEO_SIZES[];
+ 
+@@ -546,7 +545,7 @@ public:
+     static const char KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO[];
+ 
+     // The image format for video frames. See CAMERA_MSG_VIDEO_FRAME in
+-    // frameworks/base/include/camera/Camera.h.
++    // system/core/include/system/camera.h.
+     // Example value: "yuv420sp" or PIXEL_FORMAT_XXX constants. Read only.
+     static const char KEY_VIDEO_FRAME_FORMAT[];
+ 
+@@ -580,14 +579,6 @@ public:
+     // Example value: "true" or "false". Read only.
+     static const char KEY_VIDEO_SNAPSHOT_SUPPORTED[];
+     static const char KEY_FULL_VIDEO_SNAP_SUPPORTED[];
+-#if defined(CAMERA_POWERMODE) || defined(QCOM_SONY_HARDWARE)
+-    static const char KEY_POWER_MODE_SUPPORTED[];
+-#endif
+-
+-#if defined(QCOM_HARDWARE) || defined(EXYNOS4X12_ENHANCEMENTS) || defined(HAVE_ISO)
+-    static const char KEY_SUPPORTED_ISO_MODES[];
+-    static const char KEY_ISO_MODE[];
+-#endif
+ 
+ #ifdef QCOM_HARDWARE
+     static const char KEY_LENSSHADE[] ;
+@@ -601,6 +592,10 @@ public:
+     static const char KEY_GPS_ALTITUDE_REF[];
+     static const char KEY_GPS_STATUS[];
+     static const char KEY_EXIF_DATETIME[];
++#ifndef SAMSUNG_CAMERA_HARDWARE
++    static const char KEY_ISO_MODE[];
++    static const char KEY_SUPPORTED_ISO_MODES[];
++#endif
+ #endif
+ 
+     // The state of the video stabilization. If set to true, both the
+@@ -621,10 +616,6 @@ public:
+     static const char KEY_MEMORY_COLOR_ENHANCEMENT[];
+     static const char KEY_SUPPORTED_MEM_COLOR_ENHANCE_MODES[];
+ 
+-#if defined(CAMERA_POWERMODE) || defined(QCOM_SONY_HARDWARE)
+-    static const char KEY_POWER_MODE[];
+-#endif
+-
+     static const char KEY_ZSL[];
+     static const char KEY_SUPPORTED_ZSL_MODES[];
+ 
+@@ -668,10 +659,11 @@ public:
+ #endif
+ 
+ #ifdef SAMSUNG_CAMERA_HARDWARE
+-    static const char KEY_ANTI_SHAKE_MODE[];
+     static const char KEY_METERING[];
+     static const char KEY_WDR[];
+-    static const char KEY_WEATHER[];
++    static const char KEY_ANTI_SHAKE_MODE[];
++    static const char KEY_ISO_MODE[];
++    static const char KEY_SUPPORTED_ISO_MODES[];
+ #endif
+ 
+     // Values for white balance settings.
+@@ -746,9 +738,6 @@ public:
+     static const char SCENE_MODE_BACKLIGHT[];
+     static const char SCENE_MODE_FLOWERS[];
+     static const char SCENE_MODE_AR[];
+-#ifdef QCOM_SONY_HARDWARE
+-    static const char EX_SCENE_MODE_DOCUMENT[];
+-#endif
+     static const char SCENE_MODE_OFF[];
+ #endif
+     // Applications are looking for a barcode. Camera driver will be optimized
+@@ -853,8 +842,6 @@ public:
+     static const char ISO_400[];
+     static const char ISO_800[];
+     static const char ISO_1600[];
+-    static const char ISO_3200[];
+-    static const char ISO_6400[];
+     // Values for Lens Shading
+     static const char LENSSHADE_ENABLE[] ;
+     static const char LENSSHADE_DISABLE[] ;
+@@ -866,13 +853,19 @@ public:
+ 
+     static const char KEY_SHARPNESS[];
+     static const char KEY_MAX_SHARPNESS[];
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+     static const char KEY_MIN_SHARPNESS[];
++#endif
+     static const char KEY_CONTRAST[];
+     static const char KEY_MAX_CONTRAST[];
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+     static const char KEY_MIN_CONTRAST[];
++#endif
+     static const char KEY_SATURATION[];
+     static const char KEY_MAX_SATURATION[];
++#if defined(QCOM_HARDWARE) && !defined(SAMSUNG_CAMERA_QCOM)
+     static const char KEY_MIN_SATURATION[];
++#endif
+ 
+     static const char KEY_HISTOGRAM[] ;
+     static const char KEY_SUPPORTED_HISTOGRAM_MODES[] ;
+@@ -894,7 +887,6 @@ public:
+     static const char SELECTABLE_ZONE_AF_CENTER_WEIGHTED[];
+     static const char SELECTABLE_ZONE_AF_FRAME_AVERAGE[];
+ 
+-
+     // Values for Face Detection settings.
+     static const char FACE_DETECTION_OFF[];
+     static const char FACE_DETECTION_ON[];
+@@ -912,10 +904,6 @@ public:
+     static const char AE_BRACKET_HDR[];
+     static const char AE_BRACKET[];
+ 
+-#if defined(CAMERA_POWERMODE) || defined(QCOM_SONY_HARDWARE)
+-    static const char LOW_POWER[];
+-    static const char NORMAL_POWER[];
+-#endif
+     // Values for HFR settings.
+     static const char VIDEO_HFR_OFF[];
+     static const char VIDEO_HFR_2X[];
+@@ -929,14 +917,6 @@ public:
+     static const char HDR_ENABLE[];
+     static const char HDR_DISABLE[];
+ 
+-#ifdef QCOM_SONY_HARDWARE
+-    static const char KEY_EX_SUPPORTED_METERING_MODES[];
+-    static const char KEY_SEMC_METRY_MODE[];
+-    static const char SEMC_METRY_CENTER[];
+-    static const char SEMC_METRY_FRAME[];
+-    static const char SEMC_METRY_SPOT[];
+-#endif
+-
+    // Values for Redeye Reduction settings.
+    // static const char REDEYE_REDUCTION_ENABLE[];
+    // static const char REDEYE_REDUCTION_DISABLE[];
+@@ -952,11 +932,30 @@ public:
+     int getOrientation() const;
+     void setOrientation(int orientation);
+     void setPreviewFpsRange(int minFPS,int maxFPS);
+-    void setPostviewSize(int x, int y);
++    void setPostviewSize(int x,int y);
+     void getSupportedHfrSizes(Vector<Size> &sizes) const;
+-#ifdef QCOM_SONY_HARDWARE
+-    void getFocusAreaCenter(int *x, int *y) const;
+ #endif
++
++#ifdef SAMSUNG_CAMERA_QCOM
++    static const char FOCUS_MODE_FACEDETECT[];
++    static const char FOCUS_MODE_TOUCHAF[];
++    static const char ISO_50[];
++//    static const char KEY_ANTI_SHAKE_MODE[];
++    static const char KEY_AUTO_CONTRAST[];
++    static const char KEY_BEAUTY_MODE[];
++    static const char KEY_BLUR_MODE[];
++    static const char KEY_VINTAGE_MODE[];
++    static const char KEY_WDR_MODE[];
++    static const char VINTAGE_MODE_BNW[];
++    static const char VINTAGE_MODE_COOL[];
++    static const char VINTAGE_MODE_NORMAL[];
++    static const char VINTAGE_MODE_OFF[];
++    static const char VINTAGE_MODE_WARM[];
++    static const char SCENE_MODE_DAWN[];
++    static const char SCENE_MODE_DUSKDAWN[];
++    static const char SCENE_MODE_FALL[];
++    static const char SCENE_MODE_FALL_COLOR[];
++    static const char SCENE_MODE_TEXT[];
+ #endif
+ 
+ private:
+@@ -966,3 +965,4 @@ private:
+ }; // namespace android
+ 
+ #endif
++
+diff -rupN original_av/include/camera/QCameraParameters.h hq_av/include/camera/QCameraParameters.h
+--- original_av/include/camera/QCameraParameters.h	2012-12-09 22:09:23.969373227 +0100
++++ hq_av/include/camera/QCameraParameters.h	2012-12-09 22:14:38.073362294 +0100
+@@ -150,8 +150,6 @@ public:
+     static const char ISO_400[];
+     static const char ISO_800[];
+     static const char ISO_1600[];
+-    static const char ISO_3200[];
+-    static const char ISO_6400[];
+     // Values for Lens Shading
+     static const char LENSSHADE_ENABLE[] ;
+     static const char LENSSHADE_DISABLE[] ;
+diff -rupN original_av/media/libmedia/AudioSystem.cpp hq_av/media/libmedia/AudioSystem.cpp
+--- original_av/media/libmedia/AudioSystem.cpp	2012-12-09 22:09:24.289373216 +0100
++++ hq_av/media/libmedia/AudioSystem.cpp	2012-12-09 22:14:38.281362287 +0100
+@@ -848,6 +848,11 @@ extern "C" bool _ZN7android11AudioSystem
+     }
+ }
+ 
++extern "C" bool _ZN7android11AudioSystem10stopOutputEiNS0_11stream_typeEi(audio_io_handle_t output, audio_stream_type_t stream, int session)
++{
++    return AudioSystem::stopOutput(output, stream, session);
++}
++
+ #endif // AUDIO_LEGACY
+ 
+ }; // namespace android
+diff -rupN original_av/media/libmediaplayerservice/StagefrightRecorder.cpp hq_av/media/libmediaplayerservice/StagefrightRecorder.cpp
+--- original_av/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:09:24.317373215 +0100
++++ hq_av/media/libmediaplayerservice/StagefrightRecorder.cpp	2012-12-09 22:14:38.301362286 +0100
+@@ -1423,6 +1423,9 @@ status_t StagefrightRecorder::setupSurfa
+ 
+ status_t StagefrightRecorder::setupCameraSource(
+         sp<CameraSource> *cameraSource) {
++#ifdef QCOM_HARDWARE
++    bool useMeta = true;
++#endif
+     status_t err = OK;
+     if ((err = checkVideoEncoderCapabilities()) != OK) {
+         return err;
+@@ -1481,6 +1484,9 @@ status_t StagefrightRecorder::setupCamer
+     CHECK(mFrameRate != -1);
+ 
+     mIsMetaDataStoredInVideoBuffers =
++#ifdef QCOM_HARDWARE
++    !useMeta ? false :
++#endif
+         (*cameraSource)->isMetaDataStoredInVideoBuffers();
+ 
+     return OK;
+@@ -1604,7 +1610,8 @@ status_t StagefrightRecorder::setupVideo
+         encoder_flags |= OMXCodec::kStoreMetaDataInVideoBuffers;
+ #ifdef QCOM_HARDWARE
+         if (property_get("ro.board.platform", value, "0")
+-            && (!strncmp(value, "msm7x27a", sizeof("msm7x27a") - 1))) {
++            && (!strncmp(value, "msm7627a", sizeof("msm7627a") - 1) ||
++                !strncmp(value, "msm7x27a", sizeof("msm7x27a") - 1))) {
+             ALOGW("msm7627 family of chipsets supports, only one buffer at a time");
+             encoder_flags |= OMXCodec::kOnlySubmitOneInputBufferAtOneTime;
+         }
+diff -rupN original_av/media/libstagefright/ACodec.cpp hq_av/media/libstagefright/ACodec.cpp
+--- original_av/media/libstagefright/ACodec.cpp	2012-12-09 22:09:24.329373215 +0100
++++ hq_av/media/libstagefright/ACodec.cpp	2012-12-09 22:14:38.313362286 +0100
+@@ -37,6 +37,26 @@
+ #include "sec_format.h"
+ #endif
+ 
++#ifdef QCOM_HARDWARE
++#include <OMX_QCOMExtns.h>
++#include <gralloc_priv.h>
++#include <cutils/properties.h>
++#include <qcom_ui.h>
++
++//Smmoth streaming settings
++//Max resolution 1080p
++#define MAX_WIDTH 1920;
++#define MAX_HEIGHT 1080;
++
++//Min resolution QVGA
++#define MIN_WIDTH 480;
++#define MIN_HEIGHT 320;
++#endif
++
++#ifdef SAMSUNG_CODEC_SUPPORT
++#include "include/ColorFormat.h"
++#endif
++
+ namespace android {
+ 
+ template<class T>
+@@ -119,6 +139,38 @@ private:
+     DISALLOW_EVIL_CONSTRUCTORS(CodecObserver);
+ };
+ 
++#ifdef QCOM_HARDWARE
++static const int QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka = 0x7FA30C03;
++static const int OMX_QCOM_COLOR_FormatYVU420SemiPlanar = 0x7FA30C00;
++
++class ColorFormatInfo {
++    private:
++          static const int32_t preferredFormat;
++    public:
++          static int32_t getPreferredFormat() {
++          return preferredFormat;
++          }
++};
++
++const int32_t ColorFormatInfo::preferredFormat =
++#ifdef TARGET7x30
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka;
++#endif
++#ifdef TARGET8x60
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka;
++#endif
++#ifdef TARGET7x27
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar;
++#endif
++#ifdef TARGET7x27A
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar;
++#endif
++#ifdef TARGET8x50
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar;
++#endif
++#endif //QCOM_HARDWARE
++
++
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+ struct ACodec::BaseState : public AState {
+diff -rupN original_av/media/libstagefright/Android.mk hq_av/media/libstagefright/Android.mk
+--- original_av/media/libstagefright/Android.mk	2012-12-09 22:09:24.337373215 +0100
++++ hq_av/media/libstagefright/Android.mk	2012-12-09 22:14:38.313362286 +0100
+@@ -7,6 +7,34 @@ ifeq ($(BOARD_USES_ALSA_AUDIO),true)
+     endif
+ endif
+ 
++ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
++ifeq ($(TARGET_BOARD_PLATFORM),msm7x27a)
++    LOCAL_CFLAGS += -DUSE_AAC_HW_DEC
++endif
++
++ifeq ($(TARGET_BOARD_PLATFORM),msm7x27)
++    LOCAL_CFLAGS += -DTARGET7x27
++endif
++ifeq ($(TARGET_BOARD_PLATFORM),msm7x27a)
++    LOCAL_CFLAGS += -DTARGET7x27A
++endif
++ifeq ($(TARGET_BOARD_PLATFORM),msm7x30)
++    LOCAL_CFLAGS += -DTARGET7x30
++endif
++ifeq ($(TARGET_BOARD_PLATFORM),qsd8k)
++    LOCAL_CFLAGS += -DTARGET8x50
++endif
++ifeq ($(TARGET_BOARD_PLATFORM),msm8660)
++    LOCAL_CFLAGS += -DTARGET8x60
++endif
++ifeq ($(TARGET_BOARD_PLATFORM),msm8960)
++    LOCAL_CFLAGS += -DTARGET8x60
++endif
++ifeq ($(BOARD_CAMERA_USE_MM_HEAP),true)
++    LOCAL_CFLAGS += -DCAMERA_MM_HEAP
++endif
++endif
++
+ include frameworks/av/media/libstagefright/codecs/common/Config.mk
+ 
+ ifeq ($(TARGET_SOC),exynos4210)
+@@ -100,7 +128,8 @@ LOCAL_C_INCLUDES:= \
+         $(TOP)/external/openssl/include \
+         $(TOP)/hardware/qcom/display/libgralloc \
+         $(TOP)/hardware/qcom/media/mm-core/inc \
+-        $(TOP)/system/core/include
++        $(TOP)/system/core/include \
++        $(TOP)/hardware/qcom/display/libqdutils
+ 
+ LOCAL_SHARED_LIBRARIES := \
+         libbinder \
+@@ -116,6 +145,7 @@ LOCAL_SHARED_LIBRARIES := \
+         liblog \
+         libmedia \
+         libmedia_native \
++        libqdutils \
+         libsonivox \
+         libssl \
+         libstagefright_omx \
+diff -rupN original_av/media/libstagefright/AwesomePlayer.cpp hq_av/media/libstagefright/AwesomePlayer.cpp
+--- original_av/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:09:24.337373215 +0100
++++ hq_av/media/libstagefright/AwesomePlayer.cpp	2012-12-09 22:14:38.317362285 +0100
+@@ -64,7 +64,12 @@ Copyright (c) 2012, Code Aurora Forum. A
+ 
+ #include <cutils/properties.h>
+ 
++#ifdef QCOM_LEGACY_OMX
++// Disable rendering directly to NativeWindow
++#define USE_SURFACE_ALLOC 0
++#else
+ #define USE_SURFACE_ALLOC 1
++#endif
+ #define FRAME_DROP_FREQ 0
+ 
+ namespace android {
+diff -rupN original_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp hq_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp
+--- original_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:09:25.093373188 +0100
++++ hq_av/media/libstagefright/colorconversion/SoftwareRenderer.cpp	2012-12-09 22:14:38.785362269 +0100
+@@ -28,6 +28,11 @@
+ 
+ namespace android {
+ 
++#ifdef QCOM_HARDWARE
++static const int QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka = 0x7FA30C03;
++static const int OMX_QCOM_COLOR_FormatYVU420SemiPlanar = 0x7FA30C00;
++#endif
++
+ static bool runningInEmulator() {
+     char prop[PROPERTY_VALUE_MAX];
+     return (property_get("ro.kernel.qemu", prop, NULL) > 0);
+@@ -65,6 +70,7 @@ SoftwareRenderer::SoftwareRenderer(
+     size_t bufWidth, bufHeight;
+ 
+     switch (mColorFormat) {
++#ifndef MISSING_EGL_PIXEL_FORMAT_YV12
+         case OMX_COLOR_FormatYUV420Planar:
+         case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
+         {
+@@ -76,7 +82,19 @@ SoftwareRenderer::SoftwareRenderer(
+             }
+ 
+             // fall through.
++
++        }
++#endif
++#ifdef QCOM_LEGACY_OMX
++        case OMX_QCOM_COLOR_FormatYVU420SemiPlanar:
++        {
++            halFormat = HAL_PIXEL_FORMAT_YCrCb_420_SP;
++            bufWidth = (mCropWidth + 1) & ~1;
++            bufHeight = (mCropHeight + 1) & ~1;
++            mAlign = ((mWidth + 15) & -16) * ((mHeight + 15) & -16);
++            break;
+         }
++#endif
+ 
+         default:
+             halFormat = HAL_PIXEL_FORMAT_RGB_565;
+@@ -89,6 +107,10 @@ SoftwareRenderer::SoftwareRenderer(
+             break;
+     }
+ 
++    ALOGI("Buffer color format: 0x%X", mColorFormat);
++    ALOGI("Video params: mWidth: %d, mHeight: %d, mCropWidth: %d, mCropHeight: %d, mCropTop: %d, mCropLeft: %d",
++         mWidth, mHeight, mCropWidth, mCropHeight, mCropTop, mCropLeft);
++
+     CHECK(mNativeWindow != NULL);
+     CHECK(mCropWidth > 0);
+     CHECK(mCropHeight > 0);
+@@ -201,6 +223,31 @@ void SoftwareRenderer::render(
+             dst_u += dst_c_stride;
+             dst_v += dst_c_stride;
+         }
++#ifdef QCOM_LEGACY_OMX
++    } else if (mColorFormat == OMX_QCOM_COLOR_FormatYVU420SemiPlanar) {
++        // Legacy Qualcomm color format
++
++        uint8_t *src_y = (uint8_t *)data;
++        uint8_t *src_u = src_y + mAlign;
++        uint8_t *dst_y = (uint8_t *)dst;
++        uint8_t *dst_u = dst_y + buf->stride * buf->height;
++
++        // Legacy codec doesn't return crop params. Ignore it for speedup :)
++        memcpy(dst_y, src_y, mCropWidth * mCropHeight);
++        memcpy(dst_u, src_u, mCropWidth * mCropHeight / 2);
++
++        /*for(size_t y = 0; y < mCropHeight; ++y) {
++            memcpy(dst_y, src_y, mCropWidth);
++            dst_y += buf->stride;
++            src_y += mWidth;
++
++            if(y & 1) {
++                memcpy(dst_u, src_u, mCropWidth);
++                dst_u += buf->stride;
++                src_u += mWidth;
++            }
++        }*/
++#endif
+     } else {
+         CHECK_EQ(mColorFormat, OMX_TI_COLOR_FormatYUV420PackedSemiPlanar);
+ 
+diff -rupN original_av/media/libstagefright/include/SoftwareRenderer.h hq_av/media/libstagefright/include/SoftwareRenderer.h
+--- original_av/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:09:25.113373188 +0100
++++ hq_av/media/libstagefright/include/SoftwareRenderer.h	2012-12-09 22:14:38.797362269 +0100
+@@ -48,6 +48,9 @@ private:
+     int32_t mWidth, mHeight;
+     int32_t mCropLeft, mCropTop, mCropRight, mCropBottom;
+     int32_t mCropWidth, mCropHeight;
++#ifdef QCOM_LEGACY_OMX
++    int32_t mAlign;
++#endif
+ 
+     SoftwareRenderer(const SoftwareRenderer &);
+     SoftwareRenderer &operator=(const SoftwareRenderer &);
+diff -rupN original_av/media/libstagefright/MPEG4Writer.cpp hq_av/media/libstagefright/MPEG4Writer.cpp
+--- original_av/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:09:24.353373214 +0100
++++ hq_av/media/libstagefright/MPEG4Writer.cpp	2012-12-09 22:14:38.325362285 +0100
+@@ -1917,7 +1917,7 @@ status_t MPEG4Writer::Track::threadEntry
+             mGotAllCodecSpecificData = true;
+             continue;
+         }
+-#if defined(OMAP_ENHANCEMENT) && defined(TARGET_OMAP3)
++#ifdef OMAP_ENHANCEMENT
+         else if (mIsAvc && count < 3) {
+             size_t size = buffer->range_length();
+ 
+diff -rupN original_av/media/libstagefright/OMXCodec.cpp hq_av/media/libstagefright/OMXCodec.cpp
+--- original_av/media/libstagefright/OMXCodec.cpp	2012-12-09 22:09:24.365373214 +0100
++++ hq_av/media/libstagefright/OMXCodec.cpp	2012-12-09 22:14:38.333362285 +0100
+@@ -90,11 +90,66 @@ const static int64_t kBufferFilledEventT
+ // component in question is buggy or not.
+ const static uint32_t kMaxColorFormatSupported = 1000;
+ 
++#ifdef QCOM_HARDWARE
++static const int QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka = 0x7FA30C03;
++static const int OMX_QCOM_COLOR_FormatYVU420SemiPlanar = 0x7FA30C00;
++#endif
++
+ #define FACTORY_CREATE_ENCODER(name) \
+ static sp<MediaSource> Make##name(const sp<MediaSource> &source, const sp<MetaData> &meta) { \
+     return new name(source, meta); \
+ }
+ 
++#ifdef QCOM_HARDWARE
++class ColorFormatInfo {
++    private:
++        enum {
++            LOCAL = 0,
++            REMOTE = 1,
++            END = 2
++        };
++        static const int32_t preferredColorFormat[END];
++    public:
++        static int32_t getPreferredColorFormat(bool isLocal) {
++            char colorformat[10]="";
++            if(!property_get("sf.debug.colorformat", colorformat, NULL)){
++                if(isLocal) {
++                    return preferredColorFormat[LOCAL];
++                }
++                return preferredColorFormat[REMOTE];
++            } else {
++                if(!strcmp(colorformat, "yamato")) {
++                    return QOMX_COLOR_FormatYVU420PackedSemiPlanar32m4ka;
++                }
++                return preferredColorFormat[LOCAL];
++            }
++        }
++};
++
++const int32_t ColorFormatInfo::preferredColorFormat[] = {
++#ifdef TARGET7x30
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka,
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka
++#endif
++#ifdef TARGET8x60
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka,
++    QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka
++#endif
++#ifdef TARGET7x27
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar,
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar
++    //QOMX_COLOR_FormatYVU420PackedSemiPlanar32m4ka
++#endif
++#ifdef TARGET7x27A
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar,
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar
++#endif
++#ifdef TARGET8x50
++    OMX_QCOM_COLOR_FormatYVU420SemiPlanar,
++    QOMX_COLOR_FormatYVU420PackedSemiPlanar32m4ka
++#endif
++};
++#endif
+ #define FACTORY_REF(name) { #name, Make##name },
+ 
+ FACTORY_CREATE_ENCODER(AACEncoder)
+@@ -309,6 +364,12 @@ uint32_t OMXCodec::getComponentQuirks(
+                 index, "requires-wma-pro-component")) {
+         quirks |= kRequiresWMAProComponent;
+     }
++#if defined(QCOM_LEGACY_OMX) || !defined(QCOM_HARDWARE)
++    if (list->codecHasQuirk(
++                index, "requires-larger-encoder-output-buffer")) {
++            quirks |= kRequiresLargerEncoderOutputBuffer;
++    }
++#endif
+ #endif
+     return quirks;
+ }
+@@ -747,6 +808,10 @@ status_t OMXCodec::configureCodec(const
+             status_t err = mOMX->getExtensionIndex(
+                 mNode, OMX_QCOM_INDEX_PARAM_VIDEO_SYNCFRAMEDECODINGMODE, &indexType);
+ 
++#ifdef QCOM_LEGACY_OMX
++            // Don't run this check with the legacy encoder
++            if (strncmp(mComponentName, "OMX.qcom.video.encoder.", 23))
++#endif
+             CHECK_EQ(err, (status_t)OK);
+ 
+             enableType.bEnable = OMX_TRUE;
+@@ -1014,6 +1079,12 @@ static size_t getFrameSize(
+ #endif
+             return (width * height * 3) / 2;
+ 
++#ifdef QCOM_LEGACY_OMX
++    case OMX_QCOM_COLOR_FormatYVU420SemiPlanar:
++        return (((width + 15) & -16) * ((height + 15) & -16) * 3) / 2;
++#endif
++
++
+ #ifdef EXYNOS4_ENHANCEMENTS
+         case OMX_SEC_COLOR_FormatNV12LVirtualAddress:
+             return ALIGN((ALIGN(width, 16) * ALIGN(height, 16)), 2048) + ALIGN((ALIGN(width, 16) * ALIGN(height >> 1, 8)), 2048);
+@@ -1093,6 +1164,7 @@ void OMXCodec::setVideoInputFormat(
+     success = success && meta->findInt32(kKeyBitRate, &bitRate);
+     success = success && meta->findInt32(kKeyStride, &stride);
+     success = success && meta->findInt32(kKeySliceHeight, &sliceHeight);
++    CODEC_LOGI("setVideoInputFormat width=%ld, height=%ld", width, height);
+     CHECK(success);
+     CHECK(stride != 0);
+ 
+@@ -1565,6 +1637,17 @@ status_t OMXCodec::setVideoOutputFormat(
+         OMX_VIDEO_PARAM_PORTFORMATTYPE format;
+         InitOMXParams(&format);
+         format.nPortIndex = kPortIndexOutput;
++#if defined(QCOM_HARDWARE) && !defined(QCOM_LEGACY_OMX)
++        if (!strncmp(mComponentName, "OMX.qcom",8)) {
++            int32_t reqdColorFormat = ColorFormatInfo::getPreferredColorFormat(mOMXLivesLocally);
++            for(format.nIndex = 0;
++                    (OK == mOMX->getParameter(mNode, OMX_IndexParamVideoPortFormat, &format, sizeof(format)));
++                    format.nIndex++) {
++                if(format.eColorFormat == reqdColorFormat)
++                    break;
++            }
++        } else
++#endif
+         format.nIndex = 0;
+ 
+         status_t err = mOMX->getParameter(
+@@ -1705,7 +1788,11 @@ OMXCodec::OMXCodec(
+       mPaused(false),
+       mNativeWindow(
+               (!strncmp(componentName, "OMX.google.", 11)
+-              || !strcmp(componentName, "OMX.Nvidia.mpeg2v.decode"))
++              || !strcmp(componentName, "OMX.Nvidia.mpeg2v.decode")
++#ifdef QCOM_LEGACY_OMX
++              || !strncmp(componentName, "OMX.qcom",8)
++#endif
++      )
+                         ? NULL : nativeWindow)
+ #ifdef QCOM_HARDWARE
+       ,mThumbnailMode(false),
+@@ -1926,6 +2013,7 @@ status_t OMXCodec::allocateBuffersOnPort
+     }
+ 
+     status_t err = OK;
++#ifndef QCOM_LEGACY_OMX
+     if ((mFlags & kStoreMetaDataInVideoBuffers)
+             && portIndex == kPortIndexInput) {
+         ALOGW("Trying to enable metadata mode on encoder");
+@@ -1935,6 +2023,7 @@ status_t OMXCodec::allocateBuffersOnPort
+             return err;
+         }
+     }
++#endif
+ 
+     OMX_PARAM_PORTDEFINITIONTYPE def;
+     InitOMXParams(&def);
+@@ -1947,6 +2036,26 @@ status_t OMXCodec::allocateBuffersOnPort
+         return err;
+     }
+ 
++#if defined(QCOM_HARDWARE) && !defined(QCOM_LEGACY_OMX)
++    if (mFlags & kUseMinBufferCount) {
++        def.nBufferCountActual = def.nBufferCountMin;
++        if (!mIsEncoder) {
++                if (portIndex == kPortIndexOutput) {
++                    def.nBufferCountActual += 2;
++                }else {
++                    def.nBufferCountActual += 1;
++                }
++        }
++        err = mOMX->setParameter(
++                    mNode, OMX_IndexParamPortDefinition, &def, sizeof(def));
++        if (err != OK) {
++            CODEC_LOGE("setting nBufferCountActual to %lu failed: %d",
++                    def.nBufferCountActual, err);
++            return err;
++        }
++    }
++#endif
++
+     CODEC_LOGV("allocating %lu buffers of size %lu on %s port",
+             def.nBufferCountActual, def.nBufferSize,
+             portIndex == kPortIndexInput ? "input" : "output");
+diff -rupN original_av/media/libstagefright/StagefrightMetadataRetriever.cpp hq_av/media/libstagefright/StagefrightMetadataRetriever.cpp
+--- original_av/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:09:24.377373213 +0100
++++ hq_av/media/libstagefright/StagefrightMetadataRetriever.cpp	2012-12-09 22:14:38.333362285 +0100
+@@ -429,7 +429,7 @@ VideoFrame *StagefrightMetadataRetriever
+             && (!strncmp(value, "msm8660", sizeof("msm8660") - 1) ||
+                 !strncmp(value, "msm8960", sizeof("msm8960") - 1) ||
+                 !strncmp(value, "msm7x27a", sizeof("msm7x27a") - 1) ||
+-                !strncmp(value, "msm7x30", sizeof("msm7x30") - 1) )) {
++                !strncmp(value, "msm7630", sizeof("msm7630") - 1) )) {
+             flags |= OMXCodec::kEnableThumbnailMode | OMXCodec::kHardwareCodecsOnly;
+         }
+ #endif
+@@ -477,7 +477,7 @@ const char *StagefrightMetadataRetriever
+         return NULL;
+     }
+ 
+-    return mMetaData.valueAt(index).string();
++    return strdup(mMetaData.valueAt(index).string());
+ }
+ 
+ void StagefrightMetadataRetriever::parseMetaData() {
+diff -rupN original_av/services/camera/libcameraservice/CameraService.cpp hq_av/services/camera/libcameraservice/CameraService.cpp
+--- original_av/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:09:25.193373185 +0100
++++ hq_av/services/camera/libcameraservice/CameraService.cpp	2012-12-09 22:14:38.853362267 +0100
+@@ -328,14 +328,13 @@ void CameraService::loadSound() {
+     if (mSoundRef++) return;
+ 
+     char value[PROPERTY_VALUE_MAX];
+-    property_get("persist.camera.shutter.disable", value, "0");
+-    int disableSound = atoi(value);
++    property_get("persist.sys.camera-sound", value, "1");
++    int enableSound = atoi(value);
+ 
+-    if(!disableSound) {
++    if(enableSound) {
+         mSoundPlayer[SOUND_SHUTTER] = newMediaPlayer("/system/media/audio/ui/camera_click.ogg");
+         mSoundPlayer[SOUND_RECORDING] = newMediaPlayer("/system/media/audio/ui/VideoRecord.ogg");
+-    }
+-    else {
++    } else {
+         mSoundPlayer[SOUND_SHUTTER] = NULL;
+         mSoundPlayer[SOUND_RECORDING] = NULL;
+     }
+@@ -1224,7 +1223,9 @@ void CameraService::Client::handleShutte
+         c->notifyCallback(CAMERA_MSG_SHUTTER, 0, 0);
+         if (!lockIfMessageWanted(CAMERA_MSG_SHUTTER)) return;
+     }
++#ifndef SAMSUNG_CAMERA_QCOM
+     disableMsgType(CAMERA_MSG_SHUTTER);
++#endif
+ 
+     mLock.unlock();
+ }
+@@ -1496,4 +1497,4 @@ status_t CameraService::dump(int fd, con
+     return NO_ERROR;
+ }
+ 
+-}; // namespace android
++}; // namespace android
+\ No hay ningún carácter de nueva línea al final del archivo
