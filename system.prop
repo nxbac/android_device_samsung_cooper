@@ -18,7 +18,6 @@ media.stagefright.enable-http=true
 media.stagefright.enable-record=true
 
 ## Qualcomm
-debug.gr.numframebuffers=3
 debug.qctwa.statusbar=1
 debug.qctwa.preservebuf=1
 com.qc.hardware=true
